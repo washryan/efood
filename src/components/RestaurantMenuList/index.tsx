@@ -4,8 +4,9 @@ import RestaurantMenu from "../RestaurantMenu"
 
 import closeIcon from '../../assets/images/close.png'
 import { MenuProps, MenuRestaurant } from '../../types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { add, open } from '../../store/reducers/cart'
+import { RootReducer } from '../../store'
 
 export interface ModalState {
     isVisible: boolean
@@ -42,12 +43,18 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
     const addToCart = () => {
         if (selectedMenu) {
             dispatch(add(selectedMenu))
+            setSelectedMenu({ ...selectedMenu })
         }
+    }
+
+    const openAside = () => {
         dispatch(open())
         closeModal()
     }
 
+    const { items } = useSelector((state: RootReducer) => state.cart)
 
+    const isInCart = selectedMenu ? items.some((item) => item.id === selectedMenu.id) : false
 
     return (
         <>
@@ -67,15 +74,20 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
             </S.Container>
             <S.Modal className={modal.isVisible ? 'visible' : ''}>
                 <S.ModalContainer>
-                    <img src={selectedMenu?.foto} alt={selectedMenu?.nome} />
+                    <img className='picture' src={selectedMenu?.foto} alt={selectedMenu?.nome} />
                     <S.Content>
-                        <div className='content-text'>
-                            <img
-                                onClick={closeModal}
-                                className='close'
-                                src={closeIcon}
-                                alt="Fechar pop-up"
-                            />
+                        <div>
+                            <div className='close-modal' onClick={closeModal}>
+                                <span>Fechar</span>
+                                <p>
+                                    <img
+                                    className='close'
+                                    src={closeIcon}
+                                    alt="Fechar pop-up"
+                                    title="Fechar pop-up"
+                                />
+                                </p>
+                            </div>
                             <h3>{selectedMenu?.nome}</h3>
                             <p>
                                 {selectedMenu?.descricao}
@@ -86,7 +98,11 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
                                 </span>
                             </p>
                         </div>
-                        <S.Button onClick={ addToCart }>Adicionar ao carrinho - {formataPreco(selectedMenu?.preco)}</S.Button>
+                        {isInCart ? (
+                            <S.Button className='added' onClick={openAside} title='Ver no carrinho'>Produto adicionado ao carrinho</S.Button>
+                        ) : (
+                            <S.Button onClick={addToCart}>Adicionar ao carrinho - {formataPreco(selectedMenu?.preco)}</S.Button>
+                        )}
                     </S.Content>
                 </S.ModalContainer>
                 <div className="overlay" onClick={closeModal}></div>
