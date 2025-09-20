@@ -1,5 +1,5 @@
-
 import styled, { createGlobalStyle } from 'styled-components'
+
 import colors from './colors'
 
 export const GlobalStyles = createGlobalStyle`
@@ -34,10 +34,12 @@ export const GlobalStyles = createGlobalStyle`
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        height: 100%;
     }
 
     .content {
         flex: 1;
+        height: 100%;
     }
 `
 
@@ -88,5 +90,9 @@ export const RestaurantCover = styled.div`
 
     @media (max-width: 767px) {
         padding: 0 30px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+        padding: 0 50px;
     }
 `

@@ -1,26 +1,22 @@
 import { useState } from 'react'
-import * as S from './styles'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { add, backToCart, open } from '../../store/reducers/cart'
+import { RootReducer } from '../../store'
+import { parseToBrl } from '../../utils'
+
 import RestaurantMenu from "../RestaurantMenu"
+import Loader from '../Loader'
 
 import closeIcon from '../../assets/images/close.png'
-import { MenuProps, MenuRestaurant } from '../../types'
-import { useDispatch, useSelector } from 'react-redux'
-import { add, open } from '../../store/reducers/cart'
-import { RootReducer } from '../../store'
+
+import * as S from './styles'
 
 export interface ModalState {
     isVisible: boolean
 }
 
-export const formataPreco = (preco = 0) => {
-    return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    }).format(preco)
-}
-
-
-const RestaurantMenuList = ({ menu }: MenuProps) => {
+const RestaurantMenuList = ({ menu, isLoading }: MenuProps) => {
     const [selectedMenu, setSelectedMenu] = useState<MenuRestaurant | null>(null)
 
     const [modal, setModal] = useState<ModalState>({
@@ -49,12 +45,17 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
 
     const openAside = () => {
         dispatch(open())
+        dispatch(backToCart())
         closeModal()
     }
 
     const { items } = useSelector((state: RootReducer) => state.cart)
 
     const isInCart = selectedMenu ? items.some((item) => item.id === selectedMenu.id) : false
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <>
@@ -81,11 +82,11 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
                                 <span>Fechar</span>
                                 <p>
                                     <img
-                                    className='close'
-                                    src={closeIcon}
-                                    alt="Fechar pop-up"
-                                    title="Fechar pop-up"
-                                />
+                                        className='close'
+                                        src={closeIcon}
+                                        alt="Fechar pop-up"
+                                        title="Fechar pop-up"
+                                    />
                                 </p>
                             </div>
                             <h3>{selectedMenu?.nome}</h3>
@@ -99,13 +100,13 @@ const RestaurantMenuList = ({ menu }: MenuProps) => {
                             </p>
                         </div>
                         {isInCart ? (
-                            <S.Button className='added' onClick={openAside} title='Ver no carrinho'>Produto adicionado ao carrinho</S.Button>
+                            <S.Button className='added' onClick={openAside} title='Clique aqui para ver no carrinho'>Produto adicionado ao carrinho</S.Button>
                         ) : (
-                            <S.Button onClick={addToCart}>Adicionar ao carrinho - {formataPreco(selectedMenu?.preco)}</S.Button>
+                            <S.Button onClick={addToCart} title={`Clique aqui para adicionar ao carrinho`}>Adicionar ao carrinho - {parseToBrl(selectedMenu?.preco)}</S.Button>
                         )}
                     </S.Content>
                 </S.ModalContainer>
-                <div className="overlay" onClick={closeModal}></div>
+                <div className="overlay" onClick={closeModal} title='Clique aqui para fechar' />
             </S.Modal>
         </>
     )

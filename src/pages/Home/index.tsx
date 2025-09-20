@@ -1,31 +1,20 @@
-import RestaurantList from "../../components/RestaurantList"
-import { MenuRestaurant } from "../../types"
-
 import { useGetOnRestaurantsQuery } from "../../services/api"
 
-export type Restaurants = {
-    id: number
-    titulo: string
-    destacado: boolean
-    tipo: string
-    avaliacao: number
-    descricao: string
-    capa: string
-    cardapio: MenuRestaurant[]
-}
+import RestaurantList from "../../components/RestaurantList"
+import Loader from "../../components/Loader"
 
 const Home = () => {
-    const { data: restaurantes } = useGetOnRestaurantsQuery()
+    const { data: restaurantes, isLoading } = useGetOnRestaurantsQuery()
 
-    if (restaurantes) {
-        return(
-            <>
-                <RestaurantList restaurants={restaurantes} />
-            </>
-        )
+    if(!restaurantes) {
+        return <Loader />
     }
 
-    return <h4>Carregando...</h4>
+    return(
+        <>
+            <RestaurantList isLoading={isLoading} restaurants={restaurantes} />
+        </>
+    )
 }
 
 export default Home
