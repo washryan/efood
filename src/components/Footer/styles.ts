@@ -4,9 +4,9 @@ import colors from '../../styles/colors'
 export const Container = styled.div`
     background-color: ${colors.white};
     padding: 40px 0;
-    margin-top: 120px;
     text-align: center;
-    height: 298px;
+    width: 100%;
+    flex-shrink: 0;
 `
 
 export const FooterSection = styled.div`
@@ -19,12 +19,22 @@ export const FooterSection = styled.div`
         display: flex;
         gap: 8px;
         justify-content: center;
-        margin-top: 32px;
+        padding-top: 32px;
     }
     
     p {
         max-width: 480px;
         font-size: 10px;
-        margin-top: 80px;
+        padding-top: 80px;
+    }
+
+    @media (max-width: 767px) {
+        padding: 0 16px;
+
+        p {
+            font-size: 14px;
+            text-align: justify;
+            padding-top: 40px;
+        }
     }
 `

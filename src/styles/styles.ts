@@ -11,9 +11,16 @@ export const GlobalStyles = createGlobalStyle`
         list-style: none;
     }
 
+    html, body {
+        height: 100%;
+    }
+
     body {
-        background-color: ${colors.pureWhite};
         color: ${colors.rose};
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
     }
 
     .container {
@@ -21,6 +28,16 @@ export const GlobalStyles = createGlobalStyle`
         width: 100%;
         margin: 0 auto;
         position: relative;
+    }
+
+    .content-master {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .content {
+        flex: 1;
     }
 `
 
@@ -52,12 +69,21 @@ export const RestaurantCover = styled.div`
             font-size: 32px;
             color: ${colors.pureWhite};
             padding-top: 25px;
+            text-transform: capitalize;
         }
 
         .restaurant-name {
             color: ${colors.pureWhite};
             position: absolute;
             bottom: 32px;
+
+            @media (max-width: 767px) {
+                left: 30px;
+            }
         }
+    }
+
+    @media (max-width: 767px) {
+        padding: 0 30px;
     }
 `

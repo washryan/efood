@@ -16,6 +16,13 @@ export const HeaderBar = styled.header<Props>`
     background-repeat: no-repeat;
     height: ${({ $page }) => $page === 'home' ? '384px' : '125px'};
 
+    .container-restaurant-page {
+        @media (max-width: 767px) {
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+        }
+    }
 `
 export const Container = styled.div<Props>`
     display: flex;
@@ -38,7 +45,6 @@ export const Container = styled.div<Props>`
         height: 100%;
         margin: 0 auto;
     `}
-    
 `
 
 export const LinkToHome = styled(Link)`
@@ -46,6 +52,20 @@ export const LinkToHome = styled(Link)`
     text-decoration: none;
     font-weight: 900;
     font-size: 18px;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+
+    @media (max-width: 767px) {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        background-color: ${colors.rose};
+        color: ${colors.white};
+    }
 `
 
 export const Title = styled.h1`
@@ -60,5 +80,13 @@ export const Carrinho = styled.div`
     p {
         font-weight: 900;
         font-size: 18px;
+    }
+    
+    &:hover {
+        opacity: 0.8;
+    }
+
+    @media (max-width: 767px) {
+        display: none;
     }
 `

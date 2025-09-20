@@ -1,10 +1,13 @@
 import styled from 'styled-components'
-import { MenuProps } from '.'
 import colors from '../../styles/colors'
 
-export const Container = styled.section<Omit<MenuProps, 'title' | 'restaurants'>>`
+export const Container = styled.section`
     padding: 32px 0;
     background-color: ${colors.pureWhite};
+
+    @media (max-width: 767px) {
+        padding: 32px 16px;
+    }
 `
 
 export const List = styled.ul`
@@ -14,9 +17,14 @@ export const List = styled.ul`
     row-gap: 32px;
     width: 100%;
     margin-top: 48px;
+
+    @media (max-width: 767px) {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
 `
 export const Modal = styled.div`
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -26,11 +34,14 @@ export const Modal = styled.div`
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
-
+    transform: scale(0.1);
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    
     &.visible {
-        display: flex;
         opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
     }
 
     .overlay {
@@ -40,6 +51,7 @@ export const Modal = styled.div`
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.73);
+        cursor: pointer;
     }
 `
 
@@ -51,7 +63,7 @@ export const ModalContainer = styled.div`
     max-width: 1024px;
     width: 100%;
     height: 344px;
-    z-index: 1;
+    z-index: 10;
     padding: 32px;
     background-color: ${colors.rose};
     color: ${colors.white};
@@ -71,22 +83,38 @@ export const ModalContainer = styled.div`
         object-fit: cover;
     }
 
-    button {
-        background-color: ${colors.white};
-        color: ${colors.rose};
-        font-weight: bold;
-        font-size: 14px;
-        padding: 4px;
-        text-align: center;
-        border: 1px solid transparent;
-        cursor: pointer;
-        width: 218px;
+    @media (max-width: 767px) {
+        height: 70vh;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
 
-        &:hover {
-            border-color: ${colors.white};
-            background-color: transparent;
-            color: ${colors.white};
+        .close {
+            width: 20px;
+            height: 20px;
         }
+
+        button {
+            width: 100%;
+        }
+    }
+`
+
+export const Button = styled.button`
+    background-color: ${colors.white};
+    color: ${colors.rose};
+    font-weight: bold;
+    font-size: 14px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 218px;
+
+    &:hover {
+        border-color: ${colors.white};
+        background-color: transparent;
+        color: ${colors.white};
     }
 `
 
@@ -103,5 +131,15 @@ export const Content = styled.div`
     p {
         font-size: 14px;
         line-height: 22px;
+    }
+
+    @media (max-width: 767px) {
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 18px;
+        }
     }
 `
